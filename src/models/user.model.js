@@ -20,7 +20,6 @@ const userSchema = new Schema ({
 
 
 
-
 userSchema.pre("save", function (next) {
     var val = Math.floor(1000 + Math.random() * 9000);
     // this is for generating random password if needed
@@ -34,6 +33,8 @@ userSchema.pre("save", function (next) {
   userSchema.methods.checkPassword = function (password) {
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, this.password, function (err, same) {
+
+        console.log(this.password)
 
         if (err) return reject(err);
   

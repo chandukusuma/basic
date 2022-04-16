@@ -33,13 +33,12 @@ const register = async (req, res) => {
      
 }
 
-const login = async (req, res) => {
+const login = async(req, res) => {
 
 
     try{
-        const user2 = await User.findOne({email: req.body.email}).lean().exec();
+        const user2 = await User.findOne({email: req.body.email});
  
-        console.log(user2)
         if(!user2)
             return res.status(400).json({
                 status: "failed",
@@ -47,8 +46,6 @@ const login = async (req, res) => {
             }); 
         
         const match = await user2.checkPassword(req.body.password);
-
-        console.log(req.body.password)
 
         if(!match)
         return res.status(400).json({
@@ -71,8 +68,20 @@ const login = async (req, res) => {
 
 }
 
+const userDetails = async(req, res) => {
+    try{
+        let user3 = await User.find().lean().exec();
+
+        res.status(200).json({user3})
+    }
+    catch(e){
+        res.status(500).json({message: e.message})
+    }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    userDetails
     
 }
