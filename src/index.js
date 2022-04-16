@@ -1,6 +1,6 @@
 const express  = require("express");
 
-const {register, login, changePassword} = require("./controller/auth.controller");
+const {register, login, list, updateuser} = require("./controller/auth.controller");
 const Auth = require("./middleware/Auth")
 
 const app = express();
@@ -11,7 +11,9 @@ app.post("/register", register);
 
 app.post("/login", login);
 
-app.post("/changepassword", changePassword)
+app.get("/getuserlist", list);
+
+app.patch("/user/:id", updateuser)
 
 
 module.exports = app;

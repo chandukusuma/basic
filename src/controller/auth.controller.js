@@ -69,24 +69,39 @@ const login = async (req, res) => {
 
 //data update
 
-
-const changePassword = async (req, res, auth) => {
+const updateuser = async (req, res) => {
     try{
+        const user4 = await User.findByIdAndUpdate(req.params.id, req.body);
 
-        console.log(auth())
-
-        res.send(auth());
+        res.status(201).json({user4})
     }
     catch(e){
-        res.status(500).json({status: "failed", message: e.message})
+        res.status(500).json({message: e.message})
     }
 }
+
+// get users
+
+const list = async (req, res) => {
+    try{
+        const user3 = await User.find().lean().exec();
+
+        res.status(201).json({user3})
+    }
+    catch(e){
+        res.status(500).json({message: e.message})
+    }
+
+
+}
+
 
 
 
 module.exports = {
     register,
     login,
-    changePassword
+    list,
+    updateuser
     
 }
