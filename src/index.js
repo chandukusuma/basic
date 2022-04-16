@@ -1,6 +1,7 @@
 const express  = require("express");
 
-const {register, login, userDetails} = require("./controller/auth.controller");
+const {register, login, changePassword} = require("./controller/auth.controller");
+const Auth = require("./middleware/Auth")
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.post("/register", register);
 
 app.post("/login", login);
 
-app.get("/userDetails", userDetails);
+app.post("/changepassword", changePassword)
+
 
 module.exports = app;

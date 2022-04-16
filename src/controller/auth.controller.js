@@ -1,6 +1,8 @@
 require("dotenv").config();
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const auth = require("../middleware/Auth");
 const User = require("../models/user.model")
+
 
 const newToken = (user) => {
     return jwt.sign({user : user}, process.env.JWT_ACCESS_KEY)
@@ -19,7 +21,6 @@ const register = async (req, res) => {
     user = await User.create(req.body) 
 
     const token = newToken(user)
-    res.setHeader("Content-Type", "application/json")
 
     res.status(201).json({user, token});
 
@@ -33,9 +34,10 @@ const register = async (req, res) => {
      
 }
 
-const login = async(req, res) => {
+const login = async (req, res) => {
 
 
+  
     try{
         const user2 = await User.findOne({email: req.body.email});
  
@@ -57,31 +59,34 @@ const login = async(req, res) => {
 
         const token = newToken(user2);
 
-        res.setHeader("Content-Type", "application/json")
-
         res.status(201).json({user2, token});
 
     }
     catch(e){
         res.status(500).json({status: "failed", message: e.message})
     }
-
 }
 
-const userDetails = async(req, res) => {
-    try{
-        let user3 = await User.find().lean().exec();
+//data update
 
-        res.status(200).json({user3})
+
+const changePassword = async (req, res, auth) => {
+    try{
+
+        console.log(auth())
+
+        res.send(auth());
     }
     catch(e){
-        res.status(500).json({message: e.message})
+        res.status(500).json({status: "failed", message: e.message})
     }
 }
+
+
 
 module.exports = {
     register,
     login,
-    userDetails
+    changePassword
     
 }
